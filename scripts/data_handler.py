@@ -214,7 +214,7 @@ class DataHandler:
                         pyperclip.copy(value)
                         self.current_field_index = list(self.data[self.current_person].keys()).index(synonym)
                         break
-                    print(f"找到'{field_name}'的近义词'{synonym}'，但并非匹配字段。")
+                    print(f"找到'{field_name}'的近义词'{synonym}'，但并非匹配字段。将继续寻找。")
                     self.current_field_index = -1
                     pyperclip.copy('-')
                     
