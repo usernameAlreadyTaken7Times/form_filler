@@ -45,7 +45,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-3. (b) 如果希望使用语言模型，请自行下载Word2Vec格式的中文模型并放到FormFiller/asset/models/目录下。例如[fasttext](lhttps://fasttext.cc/)或[Chinese Word Vectors](https://github.com/Embedding/Chinese-Word-Vectors)，随后运行convert.py脚本转换成bin模式方便程序加载。
+3. (b) 如果希望使用语言模型，请自行下载Word2Vec格式的中文模型并放到FormFiller/asset/models/目录下。例如[fasttext](https://fasttext.cc/)或[Chinese Word Vectors](https://github.com/Embedding/Chinese-Word-Vectors)，随后运行convert.py脚本转换成bin模式方便程序加载。
 
 ```bash
 # fasttext中文模型
