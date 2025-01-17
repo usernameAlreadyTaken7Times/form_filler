@@ -1,0 +1,6 @@
+/.venv/
+/scripts/dist/
+/_pycache_/
+/asset/
+/scripts/__pycache__/
+/scripts/synonyms_server/__pycache__/
