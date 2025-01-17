@@ -104,21 +104,21 @@ class SynonymAPI:
     def get_port(self): # 获取端口号
         return self.server.config.port
 
-# Example of using the class
+# # Example of using the class
 
-# model_path = os.getenv("MODEL_PATH", r"C:\\Users\\86781\\VS_Code_Project\\FormFiller\\asset\\models\\cc.zh.300.bin")
-# model_path = os.getenv("MODEL_PATH", r"C:\\Users\\86781\\VS_Code_Project\\FormFiller\\asset\\models\\sgns.merge.word.bin")
-model_path = os.getenv("MODEL_PATH", r"C:\\Users\\86781\\VS_Code_Project\\FormFiller\\asset\\models\\merge_sgns_bigram_char300.txt.bin")
-api = SynonymAPI(model_path=model_path)
+# # model_path = os.getenv("MODEL_PATH", r"C:\\Users\\86781\\VS_Code_Project\\FormFiller\\asset\\models\\cc.zh.300.bin")
+# # model_path = os.getenv("MODEL_PATH", r"C:\\Users\\86781\\VS_Code_Project\\FormFiller\\asset\\models\\sgns.merge.word.bin")
+# model_path = os.getenv("MODEL_PATH", r"C:\\Users\\86781\\VS_Code_Project\\FormFiller\\asset\\models\\merge_sgns_bigram_char300.txt.bin")
+# api = SynonymAPI(model_path=model_path)
 
-def notify_model_loaded(success: bool, error: str):
-    if success:
-        print("Model loaded successfully!")
-    else:
-        print(f"Failed to load model: {error}")
+# def notify_model_loaded(success: bool, error: str):
+#     if success:
+#         print("Model loaded successfully!")
+#     else:
+#         print(f"Failed to load model: {error}")
 
-api.set_model_loaded_callback(notify_model_loaded)
-print("Starting the API server...")
-api.run()
+# api.set_model_loaded_callback(notify_model_loaded)
+# print("Starting the API server...")
+# api.run()
 
 
