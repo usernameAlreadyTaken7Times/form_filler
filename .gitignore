@@ -1,6 +1,6 @@
 /.venv/
 /scripts/dist/
 /_pycache_/
-/asset/
+/asset/models/
 /scripts/__pycache__/
 /scripts/synonyms_server/__pycache__/
