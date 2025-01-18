@@ -4,3 +4,5 @@
 /asset/models/
 /scripts/__pycache__/
 /scripts/synonyms_server/__pycache__/
+/scripts/test.py/
+/scripts/synonyms_server/test.py/

@@ -131,16 +131,19 @@ class DataHandler:
                     例如：在默认寻找4个同义词时，“年龄”分词深度为1，匹配近义词有1*4=4个；
                     “项目经历”分词深度为2，匹配近义词有1*(4*4)+2*4=24个；
                     “学术论文成果”分词深度为3，匹配近义词有1*(4*4*4)+2*(4*4)+3*4=108个。
-                    以上情况均未考虑词组间的位置关系，例如ab=>b'a'和a'b'，这种情况会使匹配数量翻倍。
+                    以上情况均未考虑词组间的位置关系，例如ab=>b'a'和a'b'，这种情况会使匹配数量翻几倍。
                     '''
-                    depth = len(field_name_tokens) 
+                    depth = len(field_name_tokens)
+                    if depth >= 3:
+                        depth = 2
+                        print(f"字段 '{field_name}' 的分词深度为{depth}，超过最大深度，将使用深度为2的分词。")
                     
                 except Exception as e:
                     print(f"Error: {e}") # 输出错误信息
 
                 synonyms_list = [] # 用于存储近义词
 
-                # 根据分词深度匹配近义词 必须承认，这tm是个脑瘫设计，我写的足够丑陋，但是我不想改了
+                # 根据分词深度匹配近义词 必须承认，这tm是个脑瘫设计，足够丑陋，但是我不想改了
                 match depth:
                     case 1:
                         # 一级分词
@@ -162,49 +165,7 @@ class DataHandler:
                         synonyms_list = list(chain(synonyms_list, tmp_list_reverse))
                         del tmp_list, tmp_list_reverse, synonyms_1, synonyms_2
 
-                    case 3:
-                        # 三级分词
-                        synonyms_1 = get_synonyms(self.host, self.port, field_name_tokens[0])['synonyms']
-                        synonyms_2 = get_synonyms(self.host, self.port, field_name_tokens[1])['synonyms']
-                        synonyms_3 = get_synonyms(self.host, self.port, field_name_tokens[2])['synonyms']
-
-                        if synonyms_1:
-                            synonyms_list = list(chain(synonyms_list, synonyms_1))
-                        if synonyms_2:
-                            synonyms_list = list(chain(synonyms_list, synonyms_2))
-                        if synonyms_3:
-                            synonyms_list = list(chain(synonyms_list, synonyms_3))
-
-                        tmp_list_level3a = [x+y+z for x in synonyms_1 for y in synonyms_2 for z in synonyms_3]
-                        tmp_list_level3b = [x+y+z for x in synonyms_1 for y in synonyms_3 for z in synonyms_2]
-                        tmp_list_level3c = [x+y+z for x in synonyms_2 for y in synonyms_3 for z in synonyms_1]
-                        tmp_list_level3d = [x+y+z for x in synonyms_2 for y in synonyms_1 for z in synonyms_3]
-                        tmp_list_level3e = [x+y+z for x in synonyms_3 for y in synonyms_1 for z in synonyms_2]
-                        tmp_list_level3f = [x+y+z for x in synonyms_3 for y in synonyms_2 for z in synonyms_1]
-
-                        tmp_list_level2a = [x+y for x in synonyms_1 for y in synonyms_2]
-                        tmp_list_level2b = [x+y for x in synonyms_2 for y in synonyms_3]
-                        tmp_list_level2c = [x+y for x in synonyms_1 for y in synonyms_3]
-                        tmp_list_level2d = [y+x for x in synonyms_2 for y in synonyms_1]
-                        tmp_list_level2e = [y+x for x in synonyms_3 for y in synonyms_2]
-                        tmp_list_level2f = [y+x for x in synonyms_3 for y in synonyms_1]    
-
-                        synonyms_list = list(chain(synonyms_list, tmp_list_level3a))
-                        synonyms_list = list(chain(synonyms_list, tmp_list_level3b))
-                        synonyms_list = list(chain(synonyms_list, tmp_list_level3c))
-                        synonyms_list = list(chain(synonyms_list, tmp_list_level3d))
-                        synonyms_list = list(chain(synonyms_list, tmp_list_level3e))    
-                        synonyms_list = list(chain(synonyms_list, tmp_list_level3f))
-                        synonyms_list = list(chain(synonyms_list, tmp_list_level2a))
-                        synonyms_list = list(chain(synonyms_list, tmp_list_level2b))
-                        synonyms_list = list(chain(synonyms_list, tmp_list_level2c))
-                        synonyms_list = list(chain(synonyms_list, tmp_list_level2d))
-                        synonyms_list = list(chain(synonyms_list, tmp_list_level2e))
-                        synonyms_list = list(chain(synonyms_list, tmp_list_level2f))                        
-
-                        del tmp_list_level3a, tmp_list_level3b, tmp_list_level3c, tmp_list_level3d, tmp_list_level3e, tmp_list_level3f
-                        del tmp_list_level2a, tmp_list_level2b, tmp_list_level2c, synonyms_1, synonyms_2, synonyms_3
-
+                    # 不要三级分词了，太复杂。高于二级的分词深度将使用二级分词
 
                 # 遍历字段名的分词结果，并将所有可能的近义词都尝试在数据库中匹配
                 for synonym in synonyms_list:
