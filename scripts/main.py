@@ -14,18 +14,22 @@ from multiprocessing import Process
 def get_script_dir(): # 获取脚本所在目录
     if getattr(sys, 'frozen', False):  # 如果是打包后的情况
         # 获取打包后的可执行文件所在的目录的上级目录
-        return Path(sys.executable).parent.parent
+        return Path(sys.executable).parent
     else:  # 如果是脚本运行情况
         # 获取脚本文件所在的目录的上级目录
-        return Path(__file__).parent.parent
+        return Path(__file__).resolve().parent
+
+def get_project_root():
+    """
+    获取项目根目录，适配开发环境和打包后的运行环境
+    """
+    return get_script_dir().parent
 
 # 数据库文件路径
-# database_path = os.path.join(get_script_dir(), 'asset/data/csv_database.csv')
-database_path = os.path.join(get_script_dir(), 'asset/data/xlsx_database.xlsx')
+database_path = os.path.join(get_project_root(), 'asset', 'data', 'xlsx_database.xlsx')
 
 # 语言模型文件路径
-# model_path = os.path.join(get_script_dir(), 'asset/models/cc.zh.300.bin')
-model_path = os.path.join(get_script_dir(), 'asset/models/merge_sgns_bigram_char300.txt.bin')
+model_path = os.path.join(get_project_root(), 'asset', 'models', 'merge_sgns_bigram_char300.txt.bin')
 
 # # 读取csv数据文件
 # from data_handler import PreDataHandler_csv
@@ -55,7 +59,7 @@ data_handler_thread.start()
 
 # 创建选择框
 module_var = tk.BooleanVar(value=False)
-check_button = tk.Checkbutton(root, text="加载语言模型(视规模额外占用1.5G-2.6G内存)", variable=module_var)
+check_button = tk.Checkbutton(root, text="加载语言模型(视规模额外占用约1.6G内存)", variable=module_var)
 check_button.pack(pady=10)
 
 # 创建一个框架用于存放语言模型加载模块

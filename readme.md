@@ -1,26 +1,26 @@
-# FormFiller 表格填充助手
+# ~~FormFiller 表格填充助手~~(已弃用，请转到[form_filler_new](https://github.com/usernameAlreadyTaken7Times/form_filler_new))
 
 ## 项目简介
 本项目旨在实现根据当前复制字段自动在剪贴板填充对应文字的功能。通过该项目，可以在填充表格等重复性较高的场景提高操作效率。
 
 ## 功能特点
 - 功能 1：快速调用数据并在指定位置粘贴
-- 功能 2：通过语言模型(Word2Vec)寻找同义词并匹配字段（仍在开发中）
+- 功能 2：通过语言模型 (Word2Vec) 寻找同义词并匹配字段（仍在开发中）
 
 ## 技术栈
-- python版本：3.12
+- python 版本：3.12
 - GUI：tkinter，用于创建图形界面
-- Service: Fastapi & Uvicorn，用于构建和运行api服务
+- Service: Fastapi & Uvicorn，用于构建和运行 api 服务
 - Database: .xlsx & .csv，用于存储数据
 
 ## 使用方法
 
 ### 前提条件
 - python == 3.12
-(理论上3.9以后都可以尝试，3.13会有scipy构建问题)
+(理论上 3.9 以后都可以尝试，3.13 会有 scipy 构建问题)
 
 ### 安装步骤
-1. 克隆本项目到本地或直接下载ZIP包：
+1. 克隆本项目到本地或直接下载 ZIP 包：
 
 ```bash
 git clone https://github.com/usernameAlreadyTaken7Times/form_filler
@@ -32,7 +32,7 @@ git clone https://github.com/usernameAlreadyTaken7Times/form_filler
 cd formfiller/
 ```
 
-3. (a) 构建并启动conda或venv虚拟环境，并从requirements.txt安装依赖。
+3. (a) 构建并启动 conda 或 venv 虚拟环境，并从 requirements.txt 安装依赖。
 
 ```bash
 # 新建并使用venv虚拟环境
@@ -45,8 +45,8 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-3. (b) 如希望使用语言模型，则可下载支持Word2Vec的中文模型并置于formfiller/asset/models/目录，如[fasttext](https://fasttext.cc/)或[Chinese Word Vectors](https://github.com/Embedding/Chinese-Word-Vectors)([下载地址1](https://drive.google.com/open?id=1kSAl4_AOg3_6ayU7KRM0Nk66uGdSZdnk)或[下载地址2](https://drive.google.com/open?id=1kSAl4_AOg3_6ayU7KRM0Nk66uGdSZdnk)在页面内)。
-随后更改convert.py脚本内必要参数(如名称和地址)并运行，储存为bin模式，用于程序加载。
+3. (b) 如希望使用语言模型，则可下载支持 Word2Vec 的中文模型并置于 formfiller/asset/models/目录，如[fasttext](https://fasttext.cc/)或[Chinese Word Vectors](https://github.com/Embedding/Chinese-Word-Vectors)([下载地址 1](https://drive.google.com/open?id=1kSAl4_AOg3_6ayU7KRM0Nk66uGdSZdnk)或[下载地址 2](https://drive.google.com/open?id=1kSAl4_AOg3_6ayU7KRM0Nk66uGdSZdnk)在页面内)。
+随后更改 convert.py 脚本内必要参数 (如名称和地址) 并运行，储存为 bin 模式，用于程序加载。
 
 ```bash
 cd asset/models/
@@ -61,7 +61,7 @@ python convert.py
 file <model_name>.bin && file <model_name>.npy
 ```
 
-4. 回到目录，更改main.py的语言模型路径并运行项目：
+4. 回到目录，更改 main.py 的语言模型路径并运行项目：
 
 ```bash
 cd ../../
@@ -69,14 +69,14 @@ cd ../../
 python main.py
 ```
 ## 实现原理
-- 通过Word2Vec加载语言模型
-- 通过keyboard监听Ctrl+C复制键，通过pyperclip读写剪贴板和键值
-- 通过fastapi构建语言模型和分割语句的api，并用uvicorn构建服务
+- 通过 Word2Vec 加载语言模型
+- 通过 keyboard 监听 Ctrl+C 复制键，通过 pyperclip 读写剪贴板和键值
+- 通过 fastapi 构建语言模型和分割语句的 api，并用 uvicorn 构建服务
 
 ## 操作过程
 - 启动程序，根据用户选择是否加载语言模型
 - 程序读取数据文件里的信息并创建字典，启动服务
-- 当选中屏幕字段并按下Ctrl+C时，程序读取字段并尝试在字典里匹配
+- 当选中屏幕字段并按下 Ctrl+C 时，程序读取字段并尝试在字典里匹配
 - 如果在字典内匹配到则直接返回对应的键值；如果未匹配到则
     - 返回'-'（不使用语言模型时）
     - 尝试寻找近义词，近义词匹配则返回对应键值，未匹配则返回'-'（使用语言模型时）
